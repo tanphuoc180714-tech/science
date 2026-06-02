@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscope Gallery | Khám phá Thế giới Vi mô</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/css/lucide.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Header -->
+        <header class="header glass">
+            <div class="logo-container">
+                <i data-lucide="microscope" class="logo-icon"></i>
+                <h1 class="logo-text">Microscope<span class="highlight">Gallery</span></h1>
+            </div>
+            <nav class="nav-menu">
+                <p class="tagline">Khám phá vẻ đẹp ẩn giấu của thế giới vi mô.</p>
+                <button id="btn-open-modal" class="btn-primary">
+                    <i data-lucide="plus-circle"></i> Đăng mẫu vật
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content (Grid) -->
+        <main class="main-content">
+            <div class="gallery-header">
+                <h2>Bài quan sát mới nhất</h2>
+                <div class="filter-sort">
+                    <!-- Placeholder for filters -->
+                </div>
+            </div>
+            <div id="gallery-grid" class="gallery-grid">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="modal-overlay hidden">
+        <div class="modal-container glass">
+            <div class="modal-header">
+                <h2>Đăng mẫu vật mới</h2>
+                <button id="btn-close-modal" class="btn-close"><i data-lucide="x"></i></button>
+            </div>
+            <form id="upload-form" class="modal-body">
+                <div class="form-group image-upload-group">
+                    <label for="image-upload" class="image-upload-label" id="image-preview-container">
+                        <div class="upload-placeholder">
+                            <i data-lucide="image-plus"></i>
+                            <span>Nhấp hoặc kéo thả ảnh vào đây</span>
+                        </div>
+                        <img id="image-preview" src="" alt="Preview" class="hidden">
+                    </label>
+                    <input type="file" id="image-upload" accept="image/*" required class="hidden">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="specimen-name">Tên mẫu vật</label>
+                        <input type="text" id="specimen-name" placeholder="VD: Tế bào biểu bì hành tây" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="magnification">Độ phóng đại</label>
+                        <input type="text" id="magnification" placeholder="VD: 400x" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="staining">Thuốc nhuộm (Tùy chọn)</label>
+                        <input type="text" id="staining" placeholder="VD: Xanh Methylen">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Ghi chú quan sát</label>
+                    <textarea id="notes" rows="3" placeholder="Mô tả những gì bạn quan sát được..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancel" class="btn-secondary">Hủy</button>
+                    <button type="submit" class="btn-primary">Đăng bài</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
