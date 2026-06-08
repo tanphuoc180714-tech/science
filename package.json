@@ -1,0 +1,13 @@
+{
+  "name": "microscope-gallery",
+  "version": "1.0.0",
+  "description": "Microscope Gallery with Vercel Serverless Functions",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo 'Run locally with vercel dev' && exit 1"
+  },
+  "dependencies": {
+    "formidable": "^3.5.1",
+    "googleapis": "^140.0.0"
+  }
+}
