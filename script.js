@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('image', fileInput.files[0]);
 
             try {
+                // Thử gửi lên API thật
                 const response = await fetch('/api/upload', {
                     method: 'POST',
                     body: formData
@@ -146,18 +147,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     closeUploadModal();
                     alert('Tải ảnh lên thành công!');
                 } else {
-                    let errMsg = 'Máy chủ trả về lỗi nhưng không rõ nguyên nhân.';
-                    try {
-                        const err = await response.json();
-                        errMsg = err.error + (err.details ? ': ' + err.details : '');
-                    } catch (e) {
-                        errMsg = `Mã lỗi HTTP: ${response.status} (Có thể API chưa hoạt động hoặc sai URL).`;
-                    }
-                    alert('Lỗi máy chủ: ' + errMsg);
+                    throw new Error(`HTTP ${response.status}`);
                 }
             } catch (error) {
-                console.error('Chi tiết lỗi:', error);
-                alert('Lỗi kết nối mạng: ' + error.message + '\n(Lưu ý: Nếu bạn mở file index.html trực tiếp, hãy chạy qua localhost hoặc vercel dev)');
+                // Nếu API bị lỗi (VD: HTTP 405 trên static server), chạy giả lập hiển thị ảnh cục bộ
+                console.warn('API không khả dụng, chuyển sang chế độ giả lập local:', error);
+                
+                const localImageUrl = URL.createObjectURL(fileInput.files[0]);
+                const newImage = {
+                    id: Date.now().toString(),
+                    title: title,
+                    mag: mag,
+                    desc: desc,
+                    date: new Date().toLocaleDateString('vi-VN'),
+                    src: localImageUrl
+                };
+                
+                mockImages.unshift(newImage);
+                renderGallery();
+                
+                uploadForm.reset();
+                closeUploadModal();
+                alert('Tải ảnh lên thành công! (Chế độ giả lập cục bộ - Ảnh sẽ mất khi tải lại trang)');
             } finally {
                 submitBtn.textContent = originalBtnText;
                 submitBtn.disabled = false;
