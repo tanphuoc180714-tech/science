@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalMag = document.getElementById('modal-mag');
     const modalDate = document.getElementById('modal-date');
     const closeImageBtn = document.getElementById('close-modal');
+    const downloadBtn = document.getElementById('download-btn');
 
     // Modal Upload
     const uploadBtn = document.getElementById('upload-btn');
@@ -142,6 +143,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Đóng Modal khi bấm nút X
     closeImageBtn.addEventListener('click', closeImageModal);
     closeUploadBtn.addEventListener('click', closeUploadModal);
+
+    // Chức năng tải hình (Download)
+    downloadBtn.addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = modalImg.src;
+        a.download = modalTitle.textContent + '.jpg';
+        a.target = '_blank'; // Mở tab mới nếu trình duyệt chặn download chéo tên miền
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
 
     // Xử lý form upload
     const uploadForm = document.getElementById('upload-form');
