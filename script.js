@@ -145,14 +145,39 @@ document.addEventListener('DOMContentLoaded', () => {
     closeUploadBtn.addEventListener('click', closeUploadModal);
 
     // Chức năng tải hình (Download)
-    downloadBtn.addEventListener('click', () => {
-        const a = document.createElement('a');
-        a.href = modalImg.src;
-        a.download = modalTitle.textContent + '.jpg';
-        a.target = '_blank'; // Mở tab mới nếu trình duyệt chặn download chéo tên miền
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    downloadBtn.addEventListener('click', async () => {
+        const originalText = downloadBtn.innerHTML;
+        try {
+            downloadBtn.innerHTML = 'Đang tải...';
+            downloadBtn.disabled = true;
+
+            const response = await fetch(modalImg.src);
+            if (!response.ok) throw new Error("Lỗi mạng");
+            
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            
+            // Xử lý tên file cho chuẩn (xóa dấu cách, ký tự đặc biệt)
+            let safeName = modalTitle.textContent ? modalTitle.textContent.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'anh_vi_mo';
+            a.download = safeName + '.jpg';
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            window.URL.revokeObjectURL(blobUrl);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Lỗi khi tải ảnh:', error);
+            // Phương án dự phòng nếu bị lỗi chặn chéo tên miền (CORS)
+            window.open(modalImg.src, '_blank');
+        } finally {
+            downloadBtn.innerHTML = originalText;
+            downloadBtn.disabled = false;
+        }
     });
 
     // Xử lý form upload
